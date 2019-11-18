@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Auxiliary from '../../hoc/Auxiliary'
+import Auxiliary from '../../hoc/Auxiliary/Auxiliary'
 import Burger from '../../components/Burger/Burger'
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
@@ -71,6 +71,14 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: true })
   }
 
+  purchaseCancelHandler = () => {
+    this.setState({ purchasing: false })
+  }
+
+  purchaseContinueHandler = () => {
+    alert('You continue!')
+  }
+
   render () {
     const disabledInfo = {
       ...this.state.ingredients
@@ -82,8 +90,16 @@ class BurgerBuilder extends Component {
 
     return (
       <Auxiliary>
-        <Modal show={this.state.purchasing}>
-          <OrderSummary ingredients={this.state.ingredients} />{' '}
+        <Modal
+          show={this.state.purchasing}
+          modalClosed={this.purchaseCancelHandler}
+        >
+          <OrderSummary
+            price={this.state.totalPrice}
+            purchaseCanceled={this.purchaseCancelHandler}
+            purchaseContinued={this.purchaseContinueHandler}
+            ingredients={this.state.ingredients}
+          />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
